@@ -88,3 +88,29 @@ templates/      - HTML templates for dashboard
 - Running access.py manually while the systemd service is active causes the SPI bus to lock up entirely. Both processes try to own the RC522 and neither works. Learned this the hard way after spending a while thinking the reader had died.
 - Wiring the solenoid into the relay circuit required understanding the difference between NO and NC terminals. Initially wired to NC which meant the solenoid was always powered and the lock was always open. Swapping to NO fixed it so the solenoid only triggers on access granted.
 - The 12V power supply ends in a barrel jack with no exposed wires, which made connecting it to the relay screw terminals tricky. Ended up using jumper wires pushed into the barrel jack adapter to bridge into the relay terminals.
+
+## Hardware Photos
+
+![Full Setup](media./hardware_full.JPG)
+![Half Setup](media./hardware_half.JPG)
+![RC522](media./hardware_RC522.JPG)
+![Keypad](media./hardware_keypad.JPG)
+![Relay Module](media./hardware_relaymodule.JPG)
+![Solenoid Lock](media./hardware_solenoid-lock.JPG)
+![Buzzer](media./hardware_buzzer.JPG)
+![Breadboard](media./hardware_breadboard.JPG)
+![Pi](media./hardware_pi.JPG)
+
+## Dashboard Screenshots
+
+![Dashboard Main](media./dashboard1.png)
+![Dashboard Users](media./dashboard_users.png)
+![Dashboard Logs](media./dashboard_logs.png)
+![Dashboard Denied](media./dashboard_denied.png)
+![Dashboard Granted](media./dashboard_granted.png)
+![Dashboard Enroll](media./dashboard_enroll.png)
+
+## Demo
+
+![Access Granted Demo](media./hardware_demo-success.MOV)
+![Access Denied Demo](media./hardware_demo-failure.MOV)
