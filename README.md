@@ -72,18 +72,19 @@ Default admin PIN is 0000
 
 ## Project Structure
 
-rfid_access/
-├── access.py        Main access control loop
-├── database.py      SQLite database operations
-├── keypad.py        Keypad scanning logic
-├── dashboard.py     Flask web dashboard
-├── config.py        Pin assignments and settings
-├── enroll.py        Card enrollment utility
-└── templates/       HTML templates for dashboard
+access.py       - Main access control loop
+database.py     - SQLite database operations
+keypad.py       - Keypad scanning logic
+dashboard.py    - Flask web dashboard
+config.py       - Pin assignments and settings
+enroll.py       - Card enrollment utility
+templates/      - HTML templates for dashboard
 
 ## Challenges
 
-- Active buzzer is active-low — HIGH means off, LOW means on
-- Keypad ROW and COL pins had to be swapped after keypad read vertically instead of horizontally
-- RC522 RST moved to GPIO 27 to avoid conflict with keypad on GPIO 25
-- SPI bus conflict — only one process can own the RC522 at a time; running access.py manually while the systemd service is running causes communication failure
+- The active buzzer turned out to be active-low, meaning it triggers on LOW instead of HIGH. Took some debugging to figure out why it was beeping constantly on startup.
+- The keypad was reading keys vertically instead of horizontally. Fixed by swapping the ROW and COL pin assignments in config.py after physically testing which keys were being registered.
+- The RC522 RST pin had to be moved from GPIO 25 to GPIO 27 to avoid a conflict with the keypad wiring.
+- Running access.py manually while the systemd service is active causes the SPI bus to lock up entirely. Both processes try to own the RC522 and neither works. Learned this the hard way after spending a while thinking the reader had died.
+- Wiring the solenoid into the relay circuit required understanding the difference between NO and NC terminals. Initially wired to NC which meant the solenoid was always powered and the lock was always open. Swapping to NO fixed it so the solenoid only triggers on access granted.
+- The 12V power supply ends in a barrel jack with no exposed wires, which made connecting it to the relay screw terminals tricky. Ended up using jumper wires pushed into the barrel jack adapter to bridge into the relay terminals.
