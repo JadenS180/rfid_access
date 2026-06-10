@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFID Access - Add User</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; }
+        nav { background: #16213e; padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
+        nav a { color: #e94560; text-decoration: none; font-weight: bold; }
+        nav a:hover { color: #fff; }
+        .container { padding: 30px; max-width: 500px; }
+        h2 { color: #e94560; }
+        label { display: block; margin-top: 15px; margin-bottom: 5px; color: #aaa; }
+        input, select { width: 100%; padding: 10px; border: none; border-radius: 5px; background: #0f3460; color: #eee; box-sizing: border-box; }
+        button { margin-top: 25px; width: 100%; padding: 12px; background: #e94560; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px; }
+        button:hover { background: #c73652; }
+        .flash { background: #e94560; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        .hint { font-size: 12px; color: #888; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/users">Users</a>
+        <a href="/logs">Logs</a>
+        <a href="/status">Status</a>
+        <a href="/logout" style="margin-left: auto;">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Enroll New User</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="e.g. Jaden Smiles" required>
+
+            <label>Card UID</label>
+            <input type="text" name="uid" placeholder="e.g. 123456789" required>
+            <p class="hint">Scan the card using the read_uid.py utility to get the UID</p>
+
+            <label>PIN</label>
+            <input type="password" name="pin" placeholder="4-digit PIN" maxlength="4" required>
+
+            <label>Role</label>
+            <select name="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <label>Allowed Start Time (optional)</label>
+            <input type="time" name="allowed_start">
+            <p class="hint">Leave blank for unrestricted access</p>
+
+            <label>Allowed End Time (optional)</label>
+            <input type="time" name="allowed_end">
+
+            <button type="submit">Enroll User</button>
+        </form>
+    </div>
+</body>
+</html>

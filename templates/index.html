@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFID Access - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; }
+        nav { background: #16213e; padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
+        nav a { color: #e94560; text-decoration: none; font-weight: bold; }
+        nav a:hover { color: #fff; }
+        .container { padding: 30px; }
+        h2 { color: #e94560; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #0f3460; }
+        th { background: #16213e; color: #e94560; }
+        tr:hover { background: #16213e; }
+        .granted { color: #4caf50; font-weight: bold; }
+        .denied { color: #e94560; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/users">Users</a>
+        <a href="/logs">Logs</a>
+        <a href="/status">Status</a>
+        <a href="/logout" style="margin-left: auto;">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Recent Access Events</h2>
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>Name</th>
+                <th>UID</th>
+                <th>Result</th>
+                <th>Reason</th>
+            </tr>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log['timestamp'] }}</td>
+                <td>{{ log['name'] or 'Unknown' }}</td>
+                <td>{{ log['uid'] }}</td>
+                <td class="{{ log['result'].lower() }}">{{ log['result'] }}</td>
+                <td>{{ log['reason'] or '-' }}</td>
+            </tr>
+            {% endfor %}

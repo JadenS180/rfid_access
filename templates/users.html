@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFID Access - Users</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; }
+        nav { background: #16213e; padding: 15px 30px; display: flex; gap: 20px; align-items: center; }
+        nav a { color: #e94560; text-decoration: none; font-weight: bold; }
+        nav a:hover { color: #fff; }
+        .container { padding: 30px; }
+        h2 { color: #e94560; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #0f3460; }
+        th { background: #16213e; color: #e94560; }
+        tr:hover { background: #16213e; }
+        .btn { padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+        .btn-add { background: #4caf50; color: white; display: inline-block; margin-bottom: 20px; }
+        .btn-revoke { background: #e94560; color: white; }
+        .active { color: #4caf50; }
+        .inactive { color: #e94560; }
+        .flash { background: #e94560; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/users">Users</a>
+        <a href="/logs">Logs</a>
+        <a href="/status">Status</a>
+        <a href="/logout" style="margin-left: auto;">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Users</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <a href="/users/add" class="btn btn-add">+ Enroll New User</a>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>UID</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Allowed Hours</th>
+                <th>Created</th>
+                <th>Action</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user['name'] }}</td>
+                <td>{{ user['uid'] }}</td>
+                <td>{{ user['role'] }}</td>
+                <td class="{{ 'active' if user['active'] else 'inactive' }}">
+                    {{ 'Active' if user['active'] else 'Revoked' }}
+                </td>
+                <td>
+                    {% if user['allowed_start'] and user['allowed_end'] %}
+                        {{ user['allowed_start'] }} - {{ user['allowed_end'] }}
+                    {% else %}
+                        Unrestricted
+                    {% endif %}
+                </td>
+                <td>{{ user['created_at'] }}</td>
+                <td>
+                    {% if user['active'] %}
+                        <a href="/users/revoke/{{ user['uid'] }}" class="btn btn-revoke"
+                           onclick="return confirm('Revoke {{ user['name'] }}?')">Revoke</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

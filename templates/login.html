@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RFID Access - Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #16213e; padding: 40px; border-radius: 10px; width: 300px; }
+        h2 { text-align: center; color: #0f3460; margin-bottom: 20px; color: #e94560; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px; background: #0f3460; color: #eee; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #e94560; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px; }
+        button:hover { background: #c73652; }
+        .flash { background: #e94560; padding: 10px; border-radius: 5px; margin-bottom: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>RFID Access Control</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="password" name="pin" placeholder="Enter Admin PIN" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
